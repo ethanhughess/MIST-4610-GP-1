@@ -40,6 +40,33 @@ select owner_name, net_worth, city_name
     GROUP BY owner_name, city_name, net_worth
     Having count(*) <= 3
     Order by net_worth DESC;
+
+-- complicated 1
+select player.player_name, salary, sponsor_name
+	from player, sponsor_has_player, sponsor
+    where player.player_name = sponsor_has_player.player_player_name
+    and sponsor_has_player.sponsor_sponsor_name = sponsor.sponsor_name
+    and position = 'Forward'
+    and salary > 500;
+
+-- complicated 2
+select player_name
+	from player
+    where player_name = 'Cristiano Ronaldo' and 
+    ((select avg(salary) from player where position = "Forward" * 2.0) <
+    (select salary from player where player_name = "Cristiano Ronaldo"));
+    
+-- complicated 3            
+select player_name, height, sponsor_name
+	from player, sponsor_has_player, sponsor
+    where player.player_name = sponsor_has_player.player_player_name
+    and sponsor_has_player.sponsor_sponsor_name = sponsor.sponsor_name
+    and height > 180
+    and exists (
+		select *
+			from sponsor_has_player
+            where player.player_name = sponsor_has_player.player_player_name);
+
     
 
 
